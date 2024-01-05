@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="posts")
-public class Post {
+@Table(name="schoolMemberDeatiles")
+public class School {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private long id;
-    private String tittle;
-    private String description;
-    private String content;
+    private int hod;
+    private int teachers;
+    private int students;
 }
