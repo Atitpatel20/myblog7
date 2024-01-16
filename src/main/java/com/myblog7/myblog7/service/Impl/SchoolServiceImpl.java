@@ -1,6 +1,7 @@
 package com.myblog7.myblog7.service.Impl;
 
 import com.myblog7.myblog7.entity.School;
+import com.myblog7.myblog7.exception.ResourceNotFoundException;
 import com.myblog7.myblog7.payload.SchoolDto;
 import com.myblog7.myblog7.repository.SchoolRepository;
 import com.myblog7.myblog7.service.SchoolService;
@@ -26,6 +27,19 @@ public class SchoolServiceImpl implements SchoolService {
         dto.setHod(saveRecord.getHod());
         dto.setTeachers(saveRecord.getTeachers());
         dto.setStudents(saveRecord.getStudents());
+        return dto;
+    }
+
+    @Override
+    public SchoolDto getStudentById(long id) {
+        School school = schoolRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Record not found with id: " + id)
+        );
+        SchoolDto dto= new SchoolDto();
+        dto.setId(school.getId());
+        dto.setHod(school.getHod());
+        dto.setTeachers(school.getTeachers());
+        dto.setStudents(school.getStudents());
         return dto;
     }
 }
