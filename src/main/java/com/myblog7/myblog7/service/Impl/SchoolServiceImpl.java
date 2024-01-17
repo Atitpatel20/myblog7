@@ -7,6 +7,9 @@ import com.myblog7.myblog7.repository.SchoolRepository;
 import com.myblog7.myblog7.service.SchoolService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class SchoolServiceImpl implements SchoolService {
 
@@ -18,15 +21,10 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public SchoolDto createSchoolRecord(SchoolDto schoolDto) {
-        School schools= new School();
-        schools.setHod(schoolDto.getHod());
-        schools.setTeachers(schoolDto.getTeachers());
-        schools.setStudents(schoolDto.getStudents());
+        School schools = mapToEntity(schoolDto);
+
         School saveRecord = schoolRepository.save(schools);
-        SchoolDto dto= new SchoolDto();
-        dto.setHod(saveRecord.getHod());
-        dto.setTeachers(saveRecord.getTeachers());
-        dto.setStudents(saveRecord.getStudents());
+        SchoolDto dto = mapToDto(saveRecord);
         return dto;
     }
 
@@ -35,11 +33,30 @@ public class SchoolServiceImpl implements SchoolService {
         School school = schoolRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Record not found with id: " + id)
         );
-        SchoolDto dto= new SchoolDto();
-        dto.setId(school.getId());
-        dto.setHod(school.getHod());
-        dto.setTeachers(school.getTeachers());
-        dto.setStudents(school.getStudents());
+        SchoolDto dto = mapToDto(school);
         return dto;
+    }
+
+    @Override
+    public List<SchoolDto> getAllDetailes() {
+        List<School> detailes = schoolRepository.findAll();
+        List<SchoolDto> dtos = detailes.stream().map(s -> mapToDto(s)).collect(Collectors.toList());
+        return dtos;
+    }
+   SchoolDto mapToDto(School school){
+       SchoolDto dto= new SchoolDto();
+       dto.setId(school.getId());
+       dto.setStudents(school.getStudents());
+       dto.setTeachers(school.getTeachers());
+       dto.setHod(school.getHod());
+        return dto;
+    }
+    School mapToEntity(SchoolDto schoolDto){
+        School school= new School();
+        school.setId(schoolDto.getId());
+        school.setStudents(schoolDto.getStudents());
+        school.setTeachers(schoolDto.getTeachers());
+        school.setHod(schoolDto.getHod());
+        return school;
     }
 }

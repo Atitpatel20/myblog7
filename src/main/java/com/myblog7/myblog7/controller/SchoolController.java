@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/schools")
 public class SchoolController {
@@ -20,9 +22,14 @@ public class SchoolController {
       SchoolDto schoolRecord = schoolService.createSchoolRecord(SchoolDto);
         return new ResponseEntity<>(schoolRecord, HttpStatus.CREATED);
     }
-    @GetMapping
+    @GetMapping("/persnalize")
     public ResponseEntity<SchoolDto> getStudentById(@RequestParam long id){
         SchoolDto dto = schoolService.getStudentById(id);
         return new ResponseEntity<>(dto,HttpStatus.OK);
+    }
+    @GetMapping
+    public List<SchoolDto> getAllDetailes(){
+        List<SchoolDto> shoolDtos =schoolService.getAllDetailes();
+        return shoolDtos;
     }
 }
