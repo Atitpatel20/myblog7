@@ -22,14 +22,19 @@ public class SchoolController {
       SchoolDto schoolRecord = schoolService.createSchoolRecord(SchoolDto);
         return new ResponseEntity<>(schoolRecord, HttpStatus.CREATED);
     }
-    @GetMapping("/persnalize")
+    @GetMapping("/particular")
     public ResponseEntity<SchoolDto> getStudentById(@RequestParam long id){
         SchoolDto dto = schoolService.getStudentById(id);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
+    // http://localhost:8080/api/schools?pageNo=0&pageSize=0
     @GetMapping
-    public List<SchoolDto> getAllDetailes(){
-        List<SchoolDto> shoolDtos =schoolService.getAllDetailes();
-        return shoolDtos;
+    public List<SchoolDto> getAllDetailes(
+            @RequestParam(name="pageNo",required = false,defaultValue = "0")int pageNo,
+            @RequestParam(name="pageSize",required = false,defaultValue = "0")int pageSize
+    ) {
+        List<SchoolDto> schoolDtos = schoolService.getAllDetailes(pageNo,pageSize);
+        return schoolDtos;
     }
+
 }

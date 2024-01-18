@@ -5,6 +5,9 @@ import com.myblog7.myblog7.exception.ResourceNotFoundException;
 import com.myblog7.myblog7.payload.SchoolDto;
 import com.myblog7.myblog7.repository.SchoolRepository;
 import com.myblog7.myblog7.service.SchoolService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,15 +34,16 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public SchoolDto getStudentById(long id) {
         School school = schoolRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Record not found with id: " + id)
+                () -> new ResourceNotFoundException("Record not found with id: " +id)
         );
         SchoolDto dto = mapToDto(school);
         return dto;
     }
-
     @Override
-    public List<SchoolDto> getAllDetailes() {
-        List<School> detailes = schoolRepository.findAll();
+    public List<SchoolDto> getAllDetailes(int pageNo, int pageSize) {
+        Pageable pageable=PageRequest.of(pageNo,pageSize);
+        Page<School> pageSchools = schoolRepository.findAll(pageable);
+        List<School> detailes = pageSchools.getContent();
         List<SchoolDto> dtos = detailes.stream().map(s -> mapToDto(s)).collect(Collectors.toList());
         return dtos;
     }
