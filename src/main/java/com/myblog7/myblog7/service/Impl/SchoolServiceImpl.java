@@ -8,6 +8,7 @@ import com.myblog7.myblog7.service.SchoolService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,8 +41,9 @@ public class SchoolServiceImpl implements SchoolService {
         return dto;
     }
     @Override
-    public List<SchoolDto> getAllDetailes(int pageNo, int pageSize) {
-        Pageable pageable=PageRequest.of(pageNo,pageSize);
+    public List<SchoolDto> getAllDetailes(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending():Sort.by(sortBy).descending();
+        Pageable pageable=PageRequest.of(pageNo,pageSize,sort);
         Page<School> pageSchools = schoolRepository.findAll(pageable);
         List<School> detailes = pageSchools.getContent();
         List<SchoolDto> dtos = detailes.stream().map(s -> mapToDto(s)).collect(Collectors.toList());

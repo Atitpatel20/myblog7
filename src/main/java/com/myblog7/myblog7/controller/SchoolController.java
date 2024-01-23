@@ -27,13 +27,15 @@ public class SchoolController {
         SchoolDto dto = schoolService.getStudentById(id);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
-    // http://localhost:8080/api/schools?pageNo=0&pageSize=0
+    // http://localhost:8080/api/schools?pageNo=0&pageSize=3&sortBy=students&sortDir=asc
     @GetMapping
     public List<SchoolDto> getAllDetailes(
             @RequestParam(name="pageNo",required = false,defaultValue = "0")int pageNo,
-            @RequestParam(name="pageSize",required = false,defaultValue = "0")int pageSize
+            @RequestParam(name="pageSize",required = false,defaultValue = "3")int pageSize,
+            @RequestParam(name="sortBy",required = false,defaultValue = "id")String sortBy,
+            @RequestParam(name="sortDir",required = false,defaultValue = "asc")String sortDir
     ) {
-        List<SchoolDto> schoolDtos = schoolService.getAllDetailes(pageNo,pageSize);
+        List<SchoolDto> schoolDtos = schoolService.getAllDetailes(pageNo,pageSize,sortBy,sortDir);
         return schoolDtos;
     }
 

@@ -9,5 +9,5 @@ public interface SchoolService {
 
     SchoolDto getStudentById(long id);
 
-    List<SchoolDto> getAllDetailes(int pageNo, int pageSize);
+    List<SchoolDto> getAllDetailes(int pageNo, int pageSize, String sortBy, String sortDir);
 }
