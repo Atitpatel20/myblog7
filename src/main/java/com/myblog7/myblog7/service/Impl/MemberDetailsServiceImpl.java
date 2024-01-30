@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberDetailsServiceImpl implements MemberDetailsService {
     private SchoolRepository schoolRepository;
+
     private MemberDetailsRepositoty memberDetailsRepositoty;
 
     public MemberDetailsServiceImpl(SchoolRepository schoolRepository, MemberDetailsRepositoty memberDetailsRepositoty) {
@@ -34,6 +35,27 @@ public class MemberDetailsServiceImpl implements MemberDetailsService {
         dto.setId(savedMemberDetailes.getId());
         dto.setName(savedMemberDetailes.getName());
         dto.setRole(savedMemberDetailes.getRole());
+        return dto;
+    }
+
+    @Override
+    public void deleteMember(long id) {
+        memberDetailsRepositoty.deleteById(id);
+    }
+    @Override
+    public MemberDetailsDto updateMember(long id, MemberDetailsDto memberDetailsDto) {
+        MemberDetails memberDetails = memberDetailsRepositoty.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Member not found with id" + id)
+        );
+        memberDetails.setId(memberDetailsDto.getId());
+        memberDetails.setRole(memberDetailsDto.getRole());
+        memberDetails.setName(memberDetailsDto.getName());
+        MemberDetails update = memberDetailsRepositoty.save(memberDetails);
+
+        MemberDetailsDto dto= new MemberDetailsDto();
+        dto.setId(update.getId());
+        dto.setName(update.getName());
+        dto.setRole(update.getRole());
         return dto;
     }
 }

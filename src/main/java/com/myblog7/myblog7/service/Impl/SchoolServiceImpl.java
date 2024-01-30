@@ -5,6 +5,7 @@ import com.myblog7.myblog7.exception.ResourceNotFoundException;
 import com.myblog7.myblog7.payload.SchoolDto;
 import com.myblog7.myblog7.repository.SchoolRepository;
 import com.myblog7.myblog7.service.SchoolService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +19,11 @@ import java.util.stream.Collectors;
 public class SchoolServiceImpl implements SchoolService {
 
     private SchoolRepository schoolRepository;
+    private ModelMapper modelMapper;
 
-    public SchoolServiceImpl(SchoolRepository schoolRepository) {
+    public SchoolServiceImpl(SchoolRepository schoolRepository,ModelMapper modelMapper) {
         this.schoolRepository = schoolRepository;
+        this.modelMapper=modelMapper;
     }
 
     @Override
@@ -50,19 +53,21 @@ public class SchoolServiceImpl implements SchoolService {
         return dtos;
     }
    SchoolDto mapToDto(School school){
-       SchoolDto dto= new SchoolDto();
-       dto.setId(school.getId());
-       dto.setStudents(school.getStudents());
-       dto.setTeachers(school.getTeachers());
-       dto.setHod(school.getHod());
+       SchoolDto dto = modelMapper.map(school, SchoolDto.class);
+//       SchoolDto dto= new SchoolDto();
+//       dto.setId(school.getId());
+//       dto.setStudents(school.getStudents());
+//       dto.setTeachers(school.getTeachers());
+//       dto.setHod(school.getHod());
         return dto;
     }
     School mapToEntity(SchoolDto schoolDto){
-        School school= new School();
-        school.setId(schoolDto.getId());
-        school.setStudents(schoolDto.getStudents());
-        school.setTeachers(schoolDto.getTeachers());
-        school.setHod(schoolDto.getHod());
+        School school = modelMapper.map(schoolDto, School.class);
+//        School school= new School();
+//        school.setId(schoolDto.getId());
+//        school.setStudents(schoolDto.getStudents());
+//        school.setTeachers(schoolDto.getTeachers());
+//        school.setHod(schoolDto.getHod());
         return school;
     }
 }
