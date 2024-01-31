@@ -30,10 +30,10 @@ public class MemberDetailController {
         memberDetailsService.deleteMember(id);
         return new ResponseEntity<>("member is deleted",HttpStatus.OK);
     }
-    // http://localhost:8080/api/memberDetailes/2
-    @PutMapping("/{id}")
-    public ResponseEntity<MemberDetailsDto>updateMember(@PathVariable long id,@RequestBody MemberDetailsDto memberDetailsDto){
-        MemberDetailsDto dto= memberDetailsService.updateMember(id,memberDetailsDto);
+    // http://localhost:8080/api/memberDetailes/1/school/1
+    @PutMapping("/{id}/school/{schoolId}")
+    public ResponseEntity<MemberDetailsDto>updateMember(@PathVariable long id,@RequestBody MemberDetailsDto memberDetailsDto,@PathVariable long schoolId){
+        MemberDetailsDto dto= memberDetailsService.updateMember(id,memberDetailsDto,schoolId);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
 }

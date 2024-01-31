@@ -7,5 +7,5 @@ public interface MemberDetailsService {
 
     void deleteMember(long id);
 
-    MemberDetailsDto updateMember(long id, MemberDetailsDto memberDetailsDto);
+    MemberDetailsDto updateMember(long id, MemberDetailsDto memberDetailsDto, long schoolId);
 }
